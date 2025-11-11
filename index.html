@@ -5,48 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>League of Legends</title>
   <style>
-  
   body, html {
     margin: 0;
     padding: 0;
-    font-family: 'Times New Roman', serif;
+    font-family: 'Poppins', 'Times New Roman', serif;
     scroll-behavior: smooth;
+    background: #f9f9f9;
+    animation: fadeIn 1s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 
   /* LANDING PAGE */
   .landing {
     height: 100vh;
-    background: url('https://cdna.artstation.com/p/assets/images/images/024/473/926/large/d-raw-dc-kindred-illustration21redux.jpg?1582551695')
-      no-repeat center center/cover;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.7)), 
+      url('https://cdna.artstation.com/p/assets/images/images/024/473/926/large/d-raw-dc-kindred-illustration21redux.jpg?1582551695') no-repeat center center/cover;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     color: #fff;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
     text-align: center;
     padding: 0 20px;
   }
 
   .landing h1 {
     font-size: 64px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
   }
 
   .landing button {
-    padding: 15px 30px;
+    padding: 15px 35px;
     font-size: 22px;
     border: none;
     border-radius: 8px;
-    background-color: #b00000;
+    background: linear-gradient(90deg, #a80000, #e00000);
     color: #fff;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   }
 
   .landing button:hover {
-    background-color: #e00000;
-    transform: scale(1.05);
+    transform: scale(1.08);
+    background: linear-gradient(90deg, #e00000, #ff4040);
   }
 
   header {
@@ -73,6 +81,7 @@
     filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
   }
 
+  /* NAVIGACIJA */
   nav {
     background-color: #fff;
     display: flex;
@@ -87,6 +96,7 @@
     z-index: 1000;
     font-size: 18px;
     box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
   }
 
   nav a {
@@ -111,6 +121,37 @@
     font-size: 20px;
   }
 
+  /* HAMBURGER MENI */
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+    width: 35px;
+    height: 30px;
+    position: absolute;
+    right: 20px;
+    top: 25px;
+    z-index: 1100;
+  }
+
+  .menu-toggle span {
+    height: 4px;
+    width: 100%;
+    background: white;
+    margin: 4px 0;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .menu-open nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: white;
+    padding: 20px;
+  }
+
   .container {
     max-width: 1100px;
     margin: auto;
@@ -118,12 +159,12 @@
   }
 
   .section {
-    background-color: #fafafa;
+    background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 12px;
     margin-bottom: 50px;
     padding: 35px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
   }
 
   .section h2 {
@@ -133,18 +174,6 @@
     padding-left: 12px;
     font-style: italic;
     letter-spacing: 0.5px;
-  }
-
-  .section img {
-    width: 100%;
-    border-radius: 12px;
-    margin-top: 20px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-  }
-
-  .section img:hover {
-    transform: scale(1.02);
   }
 
   .hero-grid, .region-grid, .zed-grid {
@@ -176,6 +205,10 @@
     transition: transform 0.3s ease;
   }
 
+  .hero img:hover, .region img:hover, .zed-skin img:hover {
+    transform: scale(1.03);
+  }
+
   .team-logo, .player-img {
     width: 150px;
     height: 150px;
@@ -186,7 +219,7 @@
   }
 
   footer {
-    background-color: #b00000;
+    background: linear-gradient(90deg, #a80000, #e00000);
     color: white;
     text-align: center;
     padding: 25px;
@@ -217,142 +250,67 @@
     box-shadow: 0 0 20px rgba(255,255,255,0.2);
   }
 
-  /* ---------- RESPONSIVE ZA TELEFONE ---------- */
+  /* RESPONSIVE */
   @media (max-width: 900px) {
     header {
       font-size: 30px;
       padding: 30px 10px 20px 120px;
     }
 
-    header img {
-      width: 140px;
-      left: 10px;
+    header img { width: 140px; left: 10px; }
+
+    .menu-toggle { display: flex; }
+
+    nav {
+      display: none;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .landing h1 {
-      font-size: 48px;
-    }
+    .menu-open nav { display: flex; }
 
-    .landing button {
-      font-size: 20px;
-      padding: 12px 25px;
-    }
+    .landing h1 { font-size: 48px; }
   }
 
   @media (max-width: 600px) {
-    header {
-      font-size: 24px;
-      text-align: center;
-      padding: 25px 10px;
-    }
-
-    header img {
-      position: static;
-      display: block;
-      margin: 0 auto 10px;
-      transform: none;
-      width: 120px;
-    }
-
-    nav {
-      flex-wrap: wrap;
-      gap: 10px;
-      font-size: 15px;
-      padding: 12px 5px;
-    }
-
-    .landing {
-      background-position: center;
-    }
-
-    .landing h1 {
-      font-size: 32px;
-    }
-
-    .landing button {
-      font-size: 16px;
-      padding: 10px 20px;
-    }
-
-    .container {
-      padding: 20px 15px;
-    }
-
-    .section {
-      padding: 20px;
-    }
-
-    .hero-grid, .region-grid, .zed-grid {
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-    }
-
-    .hero h3, .region h3, .zed-skin h4 {
-      font-size: 14px;
-    }
-
-    .team-logo, .player-img {
-      width: 100px;
-      height: 100px;
-    }
-
-    footer {
-      font-size: 13px;
-      padding: 15px;
-    }
+    .landing h1 { font-size: 36px; }
   }
 
-  @media (max-width: 400px) {
-    .hero-grid, .region-grid, .zed-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .landing h1 {
-      font-size: 28px;
-    }
+  /* KONTAKT FORMA */
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 500px;
+    margin-top: 25px;
   }
 
+  input, textarea {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    font-family: 'Poppins', serif;
+  }
 
-	
-/* --- FORMA ZA KONTAKT --- */
-form {
-   
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  max-width: 500px;
-  margin-top: 25px;
-}
+  button.submit-btn {
+    background-color: #b00000;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+  }
 
-input, textarea {
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  font-family: 'Times New Roman', serif;
-}
-
-button.submit-btn {
-  background-color: #b00000;
-  color: white;
-  border: none;
-  padding: 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 18px;
-  transition: background-color 0.3s ease;
-}
-
-button.submit-btn:hover {
-  background-color: #e00000;
-}
-
-
-	
+  button.submit-btn:hover {
+    background-color: #e00000;
+  }
   </style>
 </head>
-<body>
 
+<body>
 <!-- LANDING PAGE -->
 <div class="landing">
   <h1>League of Legends</h1>
@@ -365,9 +323,12 @@ button.submit-btn:hover {
   <header>
     <img src="https://www.riotgames.com/darkroom/800/87521fcaeca5867538ae7f46ac152740:2f8144e17957078916e41d2410c111c3/002-rg-2021-full-lockup-offwhite.jpg" alt="LoL logo">
     League of Legends
+    <div class="menu-toggle" id="menuToggle">
+      <span></span><span></span><span></span>
+    </div>
   </header>
 
-  <nav>
+  <nav id="mainNav">
     <a href="#o-igri">O igri</a><span class="divider">|</span>
     <a href="#junaci">Junaci</a><span class="divider">|</span>
     <a href="#regije">Regije</a><span class="divider">|</span>
@@ -376,7 +337,7 @@ button.submit-btn:hover {
     <a href="#kontakt">Kontakt</a>
   </nav>
 
-  <div class="container">
+<div class="container">
     <!-- O IGRI -->
     <div class="section" id="o-igri">
       <h2>O igri</h2>
@@ -501,7 +462,6 @@ button.submit-btn:hover {
     </div>
 
   </div>
-
   <footer>
     <p>© 2025 League of Legends Informativna Stranica | Amar Majdančić</p> 
   </footer>
@@ -527,7 +487,121 @@ lightboxImages.forEach(img => {
 overlay.addEventListener('click', () => {
   overlay.style.display = 'none';
 });
+
+// Hamburger meni
+const menuToggle = document.getElementById('menuToggle');
+const body = document.body;
+
+menuToggle.addEventListener('click', () => {
+  body.classList.toggle('menu-open');
+  menuToggle.classList.toggle('active');
+});
 </script>
+<!-- POPUP OKVIR ZA OPIS -->
+<div class="info-popup" id="infoPopup">
+  <div class="info-box">
+    <h2 id="infoTitle"></h2>
+    <p id="infoText"></p>
+  </div>
+</div>
+
+<script>
+// PODACI O JUNACIMA
+const champInfo = {
+  "Ashe": "Ashe je ledena strelkinja iz Freljorda, vođa svog naroda i majstorica luka i strele koja smrzava svoje neprijatelje.",
+  "Teemo": "Teemo je mali, ali smrtonosni izviđač iz Bandle Cityja. Poznat po svojim otrovnim gljivama i hrabrosti bez premca.",
+  "Lee Sin": "Lee Sin je slijepi redovnik iz Ionie, poznat po svojoj disciplini, brzini i borilačkim vještinama.",
+  "Lux": "Lux je čarobnica iz Demacije koja koristi svjetlosnu magiju da zaštiti svoj narod i otkrije skrivene istine.",
+  "Morgana": "Morgana je polu-anđeo, polu-demon, razapeta između tame i svjetla, kažnjena za svoju pobunu protiv Demacije.",
+  "Sona": "Sona je tiha majstorica muzike, koristi eteralni instrument Etwahl da liječi i štiti svoje saveznike.",
+  "Draven": "Draven je Noxijski egzekutor koji uživa u slavi i borbi. Njegove leteće sekire su jednako smrtonosne koliko i šarmantne.",
+  "Jinx": "Jinx je haotična pucačica iz Zauna, poznata po eksplozijama, haosu i svom beskrajnom entuzijazmu.",
+  "Darius": "Darius je general Noxusa, oličenje snage i discipline, koji ne poznaje milost prema slabima.",
+  "Yasuo": "Yasuo je mačevalac iz Ionie, optužen nepravedno za ubistvo svog učitelja, putuje svijetom tražeći iskupljenje.",
+  "Ahri": "Ahri je lisica s devet repova, koja koristi čarobne orbove da manipuliše emocijama i energijom drugih.",
+  "Garen": "Garen je simbol časti Demacije, hrabri vitez koji brani pravdu i vjeru svog kraljevstva."
+};
+
+// PODACI O REGIJAMA
+const regionInfo = {
+  "Bilgewater": "Bilgewater je lučki grad pun pirata, lovaca na čudovišta i trgovaca, smješten na obalama Runeterre.",
+  "Piltover": "Piltover je grad napretka i inovacija, poznat po svojim izumima i tehnološkom napretku.",
+  "Shurima": "Shurima je drevno carstvo iz pustinje, čija je moć bila izgubljena, ali se ponovno budi.",
+  "Freljord": "Freljord je ledena zemlja u kojoj samo najjači preživljavaju, dom velikih ratničkih plemena.",
+  "Ionia": "Ionia je zemlja balansa i prirodne magije, poznata po svojim duhovnim tradicijama i borcima.",
+  "Demacia": "Demacia je kraljevstvo koje cijeni čast i pravdu, ali skriva tamne tajne ispod svog sjaja.",
+  "Noxus": "Noxus je carstvo moći i ambicije, gdje samo najjači napreduju, a slabost se ne prašta."
+};
+
+// FUNKCIJA ZA OTVARANJE POPUPA
+const infoPopup = document.getElementById("infoPopup");
+const infoTitle = document.getElementById("infoTitle");
+const infoText = document.getElementById("infoText");
+
+function showInfo(name, type) {
+  infoTitle.textContent = name;
+  infoText.textContent = type === "champ" ? champInfo[name] : regionInfo[name];
+  infoPopup.style.display = "flex";
+}
+
+infoPopup.addEventListener("click", () => {
+  infoPopup.style.display = "none";
+});
+
+// Dodavanje event listenera za junake i regije
+document.querySelectorAll(".hero img").forEach(img => {
+  img.addEventListener("click", e => {
+    e.stopPropagation();
+    const name = img.alt;
+    if (champInfo[name]) showInfo(name, "champ");
+  });
+});
+
+document.querySelectorAll(".region img").forEach(img => {
+  img.addEventListener("click", e => {
+    e.stopPropagation();
+    const name = img.nextElementSibling.textContent.trim();
+    if (regionInfo[name]) showInfo(name, "region");
+  });
+});
+</script>
+
+<style>
+/* POPUP STIL */
+.info-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.info-box {
+  background: #fff;
+  color: #333;
+  padding: 25px 35px;
+  border-radius: 12px;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.3);
+  animation: popIn 0.3s ease;
+}
+
+.info-box h2 {
+  color: #b00000;
+  margin-bottom: 15px;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+</style>
 
 </body>
 </html>
