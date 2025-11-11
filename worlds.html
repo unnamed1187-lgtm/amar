@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>World Championship - League of Legends</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(90deg, #a80000, #e00000);
+      color: white;
+      text-align: center;
+      padding: 30px;
+      font-size: 32px;
+      font-weight: bold;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    nav {
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 15px;
+      border-bottom: 2px solid #b00000;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #b00000;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #fff;
+      background-color: #b00000;
+      padding: 8px 14px;
+      border-radius: 6px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      padding: 30px;
+    }
+
+    h2 {
+      color: #b00000;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    p {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    th, td {
+      padding: 15px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background-color: #b00000;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #ffeaea;
+      transform: scale(1.01);
+      transition: 0.2s;
+    }
+
+    .team-logo {
+      width: 60px;
+      border-radius: 8px;
+    }
+
+    footer {
+      background: linear-gradient(90deg, #a80000, #e00000);
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+  <header>League of Legends World Championship</header>
+
+  <nav>
+    
+  </nav>
+
+  <div class="container">
+    <h2>Worlds 2025 - Najbolji timovi svijeta</h2>
+    <p>Svjetsko prvenstvo u League of Legends okuplja najbolje timove iz svih regija. Evo tabele procijenjene snage timova na osnovu njihovih nastupa.</p>
+
+    <table id="tabela">
+      <thead>
+        <tr>
+          <th>Pozicija</th>
+          <th>Tim</th>
+          <th>Logo</th>
+          <th>Regija</th>
+          <th>Snaga (1–100)</th>
+          <th>Zvijezda Tima</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>T1</td>
+          <td><img src="https://static.wikia.nocookie.net/lolesports_gamepedia_en/images/5/59/SK_Telecom_T1logo_square.png" class="team-logo" alt="T1"></td>
+          <td>LCK (Koreja)</td>
+          <td>99</td>
+          <td>Faker</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Gen.G</td>
+          <td><img src="https://images.seeklogo.com/logo-png/40/1/gen-g-logo-png_seeklogo-400443.png" class="team-logo" alt="GenG"></td>
+          <td>LCK (Koreja)</td>
+          <td>96</td>
+          <td>Chovy</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>G2 Esports</td>
+          <td><img src="https://g2esports.com/cdn/shop/files/G2-Esports-2020-Logo_87bf0678-e67f-4834-8b09-e56137ffaa80.png?v=1641913940" class="team-logo" alt="G2"></td>
+          <td>LEC (Evropa)</td>
+          <td>92</td>
+          <td>Caps</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>JD Gaming</td>
+          <td><img src="https://liquipedia.net/commons/images/thumb/f/f3/JD_Gaming_2021_full_allmode.png/600px-JD_Gaming_2021_full_allmode.png" class="team-logo" alt="JD Gaming"></td>
+          <td>LPL (Kina)</td>
+          <td>91</td>
+          <td>Ruler</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Cloud9</td>
+          <td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Cloud9_logo_c._2023.svg/1200px-Cloud9_logo_c._2023.svg.png" class="team-logo" alt="Cloud9"></td>
+          <td>LCS (SAD)</td>
+          <td>87</td>
+          <td>Blaber</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Team Liquid</td>
+          <td><img src="https://images.seeklogo.com/logo-png/52/1/team-liquid-logo-png_seeklogo-528696.png" class="team-logo" alt="Liquid"></td>
+          <td>LCS (SAD)</td>
+          <td>83</td>
+          <td>CoreJJ</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    © 2025 League of Legends Worlds | Amar Majdančić
+  </footer>
+</body>
+</html>
