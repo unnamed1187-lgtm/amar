@@ -1,305 +1,240 @@
 <!DOCTYPE html>
 <html lang="bs">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>League of Legends</title>
-    <style>
-        body {
-            font-family: 'Times New Roman', serif;
-            margin: 0;
-            background-color: #ffffff;
-            color: #222;
-            line-height: 1.8;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>League of Legends</title>
+  <style>
+    body, html { margin:0; padding:0; font-family: 'Times New Roman', serif; }
+    /* LANDING PAGE */
+    .landing {
+      height: 100vh;
+      background: url('https://static.wikia.nocookie.net/leagueoflegends/images/5/5d/Spirit_Blossom_2020_LoR_Background_02.png/revision/latest?cb=20200806155331') no-repeat center center/cover;
+      display:flex; flex-direction:column; justify-content:center; align-items:center;
+      color:#fff; text-shadow:2px 2px 8px rgba(0,0,0,0.7); text-align:center;
+    }
+    .landing h1 { font-size:64px; margin-bottom:20px; }
+    .landing button {
+      padding:15px 30px; font-size:22px; border:none; border-radius:8px;
+      background-color:#b00000; color:#fff; cursor:pointer; transition: all 0.3s ease;
+    }
+    .landing button:hover { background-color:#e00000; transform:scale(1.05); }
 
-        /* HEADER */
-        header {
-            background: linear-gradient(90deg, #a80000, #e00000);
-            color: #fff;
-            text-align: center;
-            padding: 40px 10px 30px 120px; 
-          /* p lijevi padding da se tekst ne sudara s logom */
-            border-bottom: 4px solid #900000;
-            font-size: 36px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            position: relative;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
-            text-shadow: 1px 1px 6px rgba(0,0,0,0.35);
-        }
+    header {
+      background: linear-gradient(90deg, #a80000, #e00000);
+      color:#fff; text-align:center; padding:40px 10px 30px 140px;
+      border-bottom:4px solid #900000; font-size:36px; font-weight:bold;
+      letter-spacing:2px; position:relative; box-shadow:0 4px 14px rgba(0,0,0,0.25);
+      text-shadow:1px 1px 6px rgba(0,0,0,0.35);
+    }
+    header img {
+      position:absolute; left:20px; top:50%; transform:translateY(-50%);
+      width:180px; height:auto; filter:drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+    }
 
-        header img {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 180px;
-            height: auto;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
-        }
+    nav {
+      background-color:#fff; display:flex; justify-content:center; align-items:center;
+      gap:20px; padding:18px 0; border-bottom:2px solid #b00000;
+      position:sticky; top:0; z-index:1000; font-size:18px; box-shadow:0 3px 10px rgba(0,0,0,0.08);
+    }
+    nav a { color:#b00000; text-decoration:none; font-weight:bold;
+      padding:10px 16px; border-radius:6px; transition:all 0.3s ease; }
+    nav a:hover { background-color:#b00000; color:#fff; box-shadow:0 2px 12px rgba(176,0,0,0.4); }
+    .divider { color:#b00000; opacity:0.6; font-weight:bold; font-size:20px; }
 
-        /* NAVIGACIJA */
-        nav {
-            background-color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-            padding: 18px 0;
-            border-bottom: 2px solid #b00000;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            font-size: 18px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-        }
+    .container { max-width:1100px; margin:auto; padding:40px 25px; }
+    .section { background-color:#fafafa; border:1px solid #ddd; border-radius:12px; margin-bottom:50px; padding:35px; box-shadow:0 4px 14px rgba(0,0,0,0.08); }
+    .section h2 { color:#b00000; margin-bottom:20px; border-left:6px solid #b00000; padding-left:12px; font-style:italic; letter-spacing:0.5px; }
+    .section img { width:100%; border-radius:12px; margin-top:20px; cursor:pointer; transition: transform 0.3s ease; }
+    .section img:hover { transform:scale(1.02); }
 
-        nav a {
-            color: #b00000;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 10px 16px;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-        }
+    .hero-grid, .region-grid, .zed-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; margin-top:25px; }
+    .hero, .region, .zed-skin { background-color:#fff; border:1px solid #ddd; border-radius:12px; padding:15px; text-align:center; transition:transform 0.3s ease, box-shadow 0.3s ease; }
+    .hero:hover, .region:hover, .zed-skin:hover { transform:translateY(-6px); box-shadow:0 6px 20px rgba(176,0,0,0.35); }
+    .hero img, .region img, .zed-skin img { width:100%; border-radius:12px; margin-bottom:12px; cursor:pointer; transition:transform 0.3s ease; }
 
-        nav a:hover {
-            background-color: #b00000;
-            color: #fff;
-            box-shadow: 0 2px 12px rgba(176,0,0,0.4);
-        }
+    /* Uniform square for team logos and player images */
+    .team-logo, .player-img {
+      width:150px;
+      height:150px;
+      object-fit:cover;
+      border-radius:12px;
+      margin:8px auto;
+      display:block;
+    }
 
-        .divider {
-            color: #b00000;
-            opacity: 0.6;
-            font-weight: bold;
-            font-size: 20px;
-        }
+    footer { background-color:#b00000; color:white; text-align:center; padding:25px; font-size:15px; border-top:3px solid #900000; letter-spacing:0.5px; }
+    footer p { margin:6px 0; }
 
-        /* KONTEJNER I SEKCIJE */
-        .container {
-            max-width: 1100px;
-            margin: auto;
-            padding: 40px 25px;
-        }
+    .lightbox-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:none; justify-content:center; align-items:center; z-index:2000; }
+    .lightbox-overlay img { max-width:90%; max-height:90%; border-radius:12px; box-shadow:0 0 20px rgba(255,255,255,0.2); }
 
-        .section {
-            background-color: #fafafa;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            margin-bottom: 50px;
-            padding: 35px;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-        }
-
-        .section h2 {
-            color: #b00000;
-            margin-bottom: 20px;
-            border-left: 6px solid #b00000;
-            padding-left: 12px;
-            font-style: italic;
-            letter-spacing: 0.5px;
-        }
-
-        .section img {
-            width: 100%;
-            border-radius: 12px;
-            margin-top: 20px;
-            cursor: pointer; /* pokazuje je se moze kliknut */
-            transition: transform 0.3s ease;
-        }
-
-        .section img:hover {
-            transform: scale(1.02);
-        }
-
-        .champion-grid, .region-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 25px;
-        }
-
-        .champion, .region {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .champion:hover, .region:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 6px 20px rgba(176, 0, 0, 0.35);
-        }
-
-        .champion img, .region img {
-            width: 100%;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        /* FOOTER */
-        footer {
-            background-color: #b00000;
-            color: white;
-            text-align: center;
-            padding: 25px;
-            font-size: 15px;
-            border-top: 3px solid #900000;
-            letter-spacing: 0.5px;
-        }
-
-        footer p {
-            margin: 6px 0;
-        }
-
-        /* LIGHTBOX STIL */
-        .lightbox-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.85);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
-
-        .lightbox-overlay img {
-            max-width: 90%;
-            max-height: 90%;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(255,255,255,0.2);
-        }
-
-        /* RESPONSIVNOST */
-        @media (max-width: 700px) {
-            header img {
-                width: 120px;
-                left: 10px;
-            }
-            header {
-                font-size: 28px;
-                padding: 35px 10px 25px 140px; /* padding prilagođen za mobitele */
-            }
-            nav {
-                font-size: 16px;
-                gap: 12px;
-            }
-        }
-    </style>
+    @media (max-width:700px) { header img{width:120px; left:10px;} header{font-size:28px;padding:35px 10px 25px 140px;} nav{font-size:16px; gap:10px;} .landing h1{font-size:36px;} .landing button{font-size:18px;padding:12px 24px;} }
+  </style>
 </head>
 <body>
 
-<header>
-    <img src="https://www.riotgames.com/darkroom/800/87521fcaeca5867538ae7f46ac152740:2f8144e17957078916e41d2410c111c3/002-rg-2021-full-lockup-offwhite.jpg" 
-         alt="LoL logo">
-    League of Legends
-</header>
-
-<nav>
-    <a href="#o-igri">O igri</a><span class="divider">|</span>
-    <a href="#mapa">Mapa</a><span class="divider">|</span>
-    <a href="#junaci">Junaci</a><span class="divider">|</span>
-    <a href="#regije">Regije</a><span class="divider">|</span>
-    <a href="#kontakt">Kontakt</a>
-</nav>
-
-<div class="container">
-    <div class="section" id="o-igri">
-        <h2>O igri</h2>
-        <p>League of Legends (LoL) je popularna taktička online igra kompanije Riot Games. Dva tima od po pet igrača bore se na mapi pod nazivom Summoner’s Rift, koristeći jedinstvene šampione koji posjeduju posebne sposobnosti i stil borbe.</p>
-        <img src="https://cmsassets.rgpub.io/sanity/images/dsfx7636/news/b2b1b52b545df112bc346a88fe8058e3f58d79f8-1920x1080.jpg" alt="League of Legends slika" class="lightbox-img">
-    </div>
-
-    <div class="section" id="mapa">
-        <h2>Mapa: Summoner’s Rift</h2>
-        <p>Summoner’s Rift je glavna mapa u igri, sa tri staze (top, mid i bot) i džunglom između njih. Cilj igre je uništiti protivnički Nexus i zaštititi vlastiti.</p>
-        <img src="https://s1.dmcdn.net/v/Ton721YHjK750IFiP/x1080" alt="Summoner's Rift mapa" class="lightbox-img">
-    </div>
-
-    <div class="section" id="junaci">
-        <h2>Izabrani junaci</h2>
-        <div class="champion-grid">
-            <div class="champion">
-                <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg" alt="Yasuo" class="lightbox-img">
-                <h3>Yasuo</h3>
-                <p>Mačevalac iz Jonije koji koristi vjetar kao oružje. Njegova priča govori o iskupljenju i časti.</p>
-            </div>
-            <div class="champion">
-                <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_0.jpg" alt="Ahri" class="lightbox-img">
-                <h3>Ahri</h3>
-                <p>Lisica sa devet repova iz Jonije, koja koristi čarolije i emocije svojih protivnika u borbi.</p>
-            </div>
-            <div class="champion">
-                <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Garen_0.jpg" alt="Garen" class="lightbox-img">
-                <h3>Garen</h3>
-                <p>Simbol časti i discipline Demacije, poznat po svom viteškom duhu i snazi.</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="section" id="regije">
-        <h2>Regije Runeterre</h2>
-        <p>Svaki šampion potiče iz posebne regije svijeta Runeterre. Regije oblikuju njihove sposobnosti, ideale i sukobe.</p>
-        <div class="region-grid">
-            <div class="region">
-                <img src="https://support-legendsofruneterra.riotgames.com/hc/article_attachments/8721567432211" alt="Ionia" class="lightbox-img">
-                <h3>Ionia</h3>
-                <p>Zemlja balansa, prirode i magije. Dom mnogih duhovnih ratnika poput Yasuoa i Ahri.</p>
-            </div>
-            <div class="region">
-                <img src="https://wiki.leagueoflegends.com/en-us/images/Demacia_Hall_Of_Valor.jpg?a6a06" alt="Demacia" class="lightbox-img">
-                <h3>Demacia</h3>
-                <p>Kraljevstvo hrabrosti i discipline. Garen je njegov najpoznatiji heroj i zaštitnik.</p>
-            </div>
-            <div class="region">
-                <img src="https://wiki.leagueoflegends.com/en-us/images/thumb/Noxus_LoR_Background.jpg/800px-Noxus_LoR_Background.jpg?18f05" alt="Noxus" class="lightbox-img">
-                <h3>Noxus</h3>
-                <p>Imperija koja cijeni snagu i moć iznad svega. Samo najjači opstaju.</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="section" id="kontakt">
-        <h2>Kontakt</h2>
-        <p>Ova stranica pruža osnovne informacije o igri League of Legends.</p>
-        <p><b>Web:</b> <a href="https://www.leagueoflegends.com/" target="_blank" style="color:#b00000; text-decoration:none;">leagueoflegends.com</a></p>
-    </div>
+<!-- LANDING PAGE -->
+<div class="landing">
+  <h1>League of Legends</h1>
+  <button onclick="document.getElementById('mainContent').scrollIntoView({behavior:'smooth'})">
+    Uđi u svijet LoLa
+  </button>
 </div>
 
-<footer>
-    <p>© 2025 League of Legends Informativna Stranica | Amar Majdančić</p> 
-</footer>
+<div id="mainContent">
+  <header>
+    <img src="https://www.riotgames.com/darkroom/800/87521fcaeca5867538ae7f46ac152740:2f8144e17957078916e41d2410c111c3/002-rg-2021-full-lockup-offwhite.jpg" alt="LoL logo">
+    League of Legends
+  </header>
 
-<!-- LIGHTBOX SCRIPT -->
+  <nav>
+    <a href="#o-igri">O igri</a><span class="divider">|</span>
+    <a href="#junaci">Junaci</a><span class="divider">|</span>
+    <a href="#regije">Regije</a><span class="divider">|</span>
+    <a href="#ligeti">Lige i timovi</a><span class="divider">|</span>
+    <a href="#zed">Zed</a><span class="divider">|</span>
+    <a href="#kontakt">Kontakt</a>
+  </nav>
+
+  <div class="container">
+    <!-- O IGRI -->
+    <div class="section" id="o-igri">
+      <h2>O igri</h2>
+      <p>League of Legends (LoL) je popularna taktička online igra kompanije Riot Games. Dva tima od po pet igrača bore se na mapi Summoner’s Rift koristeći jedinstvene šampione sa posebnim sposobnostima.</p>
+    </div>
+
+    <!-- JUNACI -->
+    <div class="section" id="junaci">
+      <h2>Izabrani junaci</h2>
+      <div class="hero-grid">
+        <div class="hero"><img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_0.jpg" alt="Ashe" class="lightbox-img"><h3>Ashe</h3></div>
+        <div class="hero"><img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Teemo_0.jpg" alt="Teemo" class="lightbox-img"><h3>Teemo</h3></div>
+        <div class="hero"><img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/LeeSin_0.jpg" alt="Lee Sin" class="lightbox-img"><h3>Lee Sin</h3></div>
+        <div class="hero"><img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Lux_0.jpg" alt="Lux" class="lightbox-img"><h3>Lux</h3></div>
+        <div class="hero"><img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Morgana_0.jpg" alt="Morgana" class="lightbox-img"><h3>Morgana</h3></div>
+        <div class="hero"><img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Sona_0.jpg" alt="Sona" class="lightbox-img"><h3>Sona</h3></div>
+        <div class="hero"><img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Draven_0.jpg" alt="Draven" class="lightbox-img"><h3>Draven</h3></div>
+        <div class="hero"><img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Jinx_0.jpg" alt="Jinx" class="lightbox-img"><h3>Jinx</h3></div>
+        <div class="hero"><img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Darius_0.jpg" alt="Darius" class="lightbox-img"><h3>Darius</h3></div>
+        <div class="hero"><img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg" alt="Yasuo" class="lightbox-img"><h3>Yasuo</h3></div>
+        <div class="hero"><img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_0.jpg" alt="Ahri" class="lightbox-img"><h3>Ahri</h3></div>
+        <div class="hero"><img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Garen_0.jpg" alt="Garen" class="lightbox-img"><h3>Garen</h3></div>
+      </div>
+    </div>
+
+    <!-- REGIJE -->
+    <div class="section" id="regije">
+      <h2>Regije Runeterre</h2>
+      <div class="region-grid">
+        <div class="region"><img src="https://support-legendsofruneterra.riotgames.com/hc/article_attachments/8721567432211" alt="Ionia" class="lightbox-img"><h3>Ionia</h3></div>
+        <div class="region"><img src="https://wiki.leagueoflegends.com/en-us/images/Demacia_Hall_Of_Valor.jpg?a6a06" alt="Demacia" class="lightbox-img"><h3>Demacia</h3></div>
+        <div class="region"><img src="https://wiki.leagueoflegends.com/en-us/images/thumb/Noxus_LoR_Background.jpg/800px-Noxus_LoR_Background.jpg?18f05" alt="Noxus" class="lightbox-img"><h3>Noxus</h3></div>
+      </div>
+    </div>
+
+    <!-- LIGE I TIMOVI -->
+    <div class="section" id="ligeti">
+      <h2>Lige i timovi</h2>
+      <p>U League of Legends postoje rangirane lige, od Iron do Challenger. Igrači se natječu u timovima kako bi osvojili viši rang. Postoje profesionalni esports timovi koji sudjeluju u međunarodnim turnirima poput LCS, LEC, LCK i LPL.</p>
+
+      <!-- RANKOVI -->
+      <h3>Rankovi</h3>
+      <div class="hero-grid">
+        <div class="hero"><img src="https://opgg-static.akamaized.net/images/medals/iron_1.png" alt="Iron" class="lightbox-img"><h4>Iron</h4></div>
+        <div class="hero"><img src="https://opgg-static.akamaized.net/images/medals/bronze_1.png" alt="Bronze" class="lightbox-img"><h4>Bronze</h4></div>
+        <div class="hero"><img src="https://opgg-static.akamaized.net/images/medals/silver_1.png" alt="Silver" class="lightbox-img"><h4>Silver</h4></div>
+        <div class="hero"><img src="https://opgg-static.akamaized.net/images/medals/gold_1.png" alt="Gold" class="lightbox-img"><h4>Gold</h4></div>
+        <div class="hero"><img src="https://opgg-static.akamaized.net/images/medals/platinum_1.png" alt="Platinum" class="lightbox-img"><h4>Platinum</h4></div>
+        <div class="hero"><img src="https://opgg-static.akamaized.net/images/medals/diamond_1.png" alt="Diamond" class="lightbox-img"><h4>Diamond</h4></div>
+        <div class="hero"><img src="https://opgg-static.akamaized.net/images/medals/master_1.png" alt="Master" class="lightbox-img"><h4>Master</h4></div>
+        <div class="hero"><img src="https://opgg-static.akamaized.net/images/medals/grandmaster_1.png" alt="Grandmaster" class="lightbox-img"><h4>Grandmaster</h4></div>
+        <div class="hero"><img src="https://opgg-static.akamaized.net/images/medals/challenger_1.png" alt="Challenger" class="lightbox-img"><h4>Challenger</h4></div>
+      </div>
+
+      <!-- PRO TIMOVI -->
+      <h3>Profesionalni timovi</h3>
+      <div class="hero-grid">
+        <!-- T1 -->
+        <div class="hero">
+          <img src="https://static.wikia.nocookie.net/lolesports_gamepedia_en/images/5/59/SK_Telecom_T1logo_square.png" alt="T1 Logo" class="team-logo lightbox-img">
+          <h4>T1</h4>
+          <p>Pro igrači: Faker, Gumayusi, Keria</p>
+          <img src="https://external-preview.redd.it/wZDS9BJWefG--rT0aN-ZG-C4FCheXIwDxm1uVbIsUaU.jpg?width=640&crop=smart&auto=webp&s=e999354cf0c72c886099e4ad3e0a67db1d7464b1" alt="T1 Players" class="player-img lightbox-img">
+        </div>
+
+        <!-- G2 -->
+        <div class="hero">
+          <img src="https://g2esports.com/cdn/shop/files/G2-Esports-2020-Logo_87bf0678-e67f-4834-8b09-e56137ffaa80.png?v=1641913940" alt="G2 Logo" class="team-logo lightbox-img">
+          <h4>G2 Esports</h4>
+          <p>Pro igrači: Caps, Jankos, Wunder</p>
+          <img src="https://img.redbull.com/images/c_crop,w_720,h_360,x_199,y_0/c_auto,w_1200,h_600/f_auto,q_auto/redbullcom/2021/3/12/laztd4q3ixr5uoqpd6di/g2esportswallpaper" alt="G2 Players" class="player-img lightbox-img">
+        </div>
+
+        <!-- Cloud9 -->
+        <div class="hero">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Cloud9_logo_c._2023.svg/1200px-Cloud9_logo_c._2023.svg.png" alt="Cloud9 Logo" class="team-logo lightbox-img">
+          <h4>Cloud9</h4>
+          <p>Pro igrači: Blaber, Fudge, Perkz</p>
+          <img src="https://letsgamenow.com/new-theme/images/News/1635349259.Cloud9's-Worlds-journey-comes-to-an-end-with-a-clean-sweep-for-Gen.G.jpg" alt="Cloud9 Players" class="player-img lightbox-img">
+        </div>
+      </div>
+    </div>
+
+    <!-- ZED -->
+    <div class="section" id="zed">
+      <h2>Zed - Moj main champion</h2>
+      <p>Zed je moj main champion. Majstor sjenki iz Ionie, njegova priča govori o moći i iskupljenju.</p>
+      <div class="zed-grid">
+        <div class="zed-skin"><img src="https://wiki.leagueoflegends.com/en-us/images/thumb/Zed_OriginalSkin.jpg/340px-Zed_OriginalSkin.jpg?525e3" alt="Classic Zed" class="lightbox-img"><h4>Classic Zed</h4></div>
+        <div class="zed-skin"><img src="https://wiki.leagueoflegends.com/en-us/images/thumb/Zed_ShockbladeSkin.jpg/340px-Zed_ShockbladeSkin.jpg?36af8" alt="Shockblade Zed" class="lightbox-img"><h4>Shockblade Zed</h4></div>
+        <div class="zed-skin"><img src="https://wiki.leagueoflegends.com/en-us/images/thumb/Zed_PROJECTSkin.jpg/340px-Zed_PROJECTSkin.jpg?dea60" alt="PROJECT Zed" class="lightbox-img"><h4>PROJECT Zed</h4></div>
+        <div class="zed-skin"><img src="https://wiki.leagueoflegends.com/en-us/images/thumb/Zed_GalaxySlayerSkin.jpg/340px-Zed_GalaxySlayerSkin.jpg?27ccb" alt="Galaxy Slayer Zed" class="lightbox-img"><h4>Galaxy Slayer Zed</h4></div>
+        <div class="zed-skin"><img src="https://wiki.leagueoflegends.com/en-us/images/thumb/Zed_PsyOpsSkin.jpg/340px-Zed_PsyOpsSkin.jpg?53aad" alt="PsyOps Zed" class="lightbox-img"><h4>PsyOps Zed</h4></div>
+        <div class="zed-skin"><img src="https://wiki.leagueoflegends.com/en-us/images/thumb/Zed_DebonairSkin.jpg/340px-Zed_DebonairSkin.jpg?9c66e" alt="Debonair Zed" class="lightbox-img"><h4>Debonair Zed</h4></div>
+        <div class="zed-skin"><img src="https://wiki.leagueoflegends.com/en-us/images/thumb/Zed_EmpyreanSkin.jpg/340px-Zed_EmpyreanSkin.jpg?a33df" alt="Empyrean Zed" class="lightbox-img"><h4>Empyrean Zed</h4></div>
+        <div class="zed-skin"><img src="https://wiki.leagueoflegends.com/en-us/images/thumb/Zed_ImmortalJourneySkin.jpg/340px-Zed_ImmortalJourneySkin.jpg?8aaa2" alt="Immortal Journey Zed" class="lightbox-img"><h4>Immortal Journey Zed</h4></div>
+        <div class="zed-skin"><img src="https://wiki.leagueoflegends.com/en-us/images/thumb/Zed_BloodMoonSkin.jpg/340px-Zed_BloodMoonSkin.jpg?3e02b" alt="BloodMoon Zed" class="lightbox-img"><h4>BloodMoon Zed</h4></div>
+        <div class="zed-skin"><img src="https://wiki.leagueoflegends.com/en-us/images/thumb/Zed_SKTT1Skin.jpg/340px-Zed_SKTT1Skin.jpg?09668" alt="SKTT1 Zed" class="lightbox-img"><h4>SKTT1 Zed</h4></div>
+        <div class="zed-skin"><img src="https://wiki.leagueoflegends.com/en-us/images/thumb/Zed_Worlds2016Skin.jpg/340px-Zed_Worlds2016Skin.jpg?0ad30" alt="Worlds 2016 Zed" class="lightbox-img"><h4>Worlds 2016 Zed</h4></div>
+        <div class="zed-skin"><img src="https://wiki.leagueoflegends.com/en-us/images/thumb/Zed_DeathSwornSkin.jpg/340px-Zed_DeathSwornSkin.jpg?4f256" alt="Deathsworn Zed" class="lightbox-img"><h4>Deathsworn Zed</h4></div>
+      </div>
+    </div>
+
+    <!-- KONTAKT -->
+    <div class="section" id="kontakt">
+      <h2>Kontakt</h2>
+      <p>Ova stranica pruža osnovne informacije o igri League of Legends.</p>
+      <p><b>Web:</b> <a href="https://www.leagueoflegends.com/" target="_blank" style="color:#b00000; text-decoration:none;">leagueoflegends.com</a></p>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>© 2025 League of Legends Informativna Stranica | Amar Majdančić</p> 
+  </footer>
+</div>
+
+<!-- LIGHTBOX -->
 <div class="lightbox-overlay" id="lightboxOverlay">
-    <img src="" alt="Uvećana slika">
+  <img src="" alt="Uvećana slika">
 </div>
 
 <script>
-    const lightboxImages = document.querySelectorAll('.lightbox-img');
-    const overlay = document.getElementById('lightboxOverlay');
-    const overlayImg = overlay.querySelector('img');
+const lightboxImages = document.querySelectorAll('.lightbox-img');
+const overlay = document.getElementById('lightboxOverlay');
+const overlayImg = overlay.querySelector('img');
 
-    lightboxImages.forEach(img => {
-        img.addEventListener('click', () => {
-            overlay.style.display = 'flex';
-            overlayImg.src = img.src;
-        });
-    });
+lightboxImages.forEach(img => {
+  img.addEventListener('click', () => {
+    overlay.style.display = 'flex';
+    overlayImg.src = img.src;
+  });
+});
 
-    overlay.addEventListener('click', () => {
-        overlay.style.display = 'none';
-        overlayImg.src = '';
-    });
+overlay.addEventListener('click', () => {
+  overlay.style.display = 'none';
+});
 </script>
 
 </body>
