@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>League of Legends</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            margin: 0;
+            background-color: #ffffff;
+            color: #222;
+            line-height: 1.8;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(90deg, #a80000, #e00000);
+            color: #fff;
+            text-align: center;
+            padding: 50px 0 45px 0;
+            border-bottom: 4px solid #900000;
+            font-size: 48px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            position: relative;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.35);
+        }
+
+        header img {
+            position: absolute;
+            left: 35px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 180px;
+            height: auto;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+        }
+
+        /* NAVIGACIJA */
+        nav {
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            padding: 18px 0;
+            border-bottom: 2px solid #b00000;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            font-size: 18px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        nav a {
+            color: #b00000;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #b00000;
+            color: #fff;
+            box-shadow: 0 2px 12px rgba(176,0,0,0.4);
+        }
+
+        .divider {
+            color: #b00000;
+            opacity: 0.6;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        /* KONTEJNER I SEKCIJE */
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 40px 25px;
+        }
+
+        .section {
+            background-color: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            margin-bottom: 50px;
+            padding: 35px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+
+        .section h2 {
+            color: #b00000;
+            margin-bottom: 20px;
+            border-left: 6px solid #b00000;
+            padding-left: 12px;
+            font-style: italic;
+            letter-spacing: 0.5px;
+        }
+
+        .section img {
+            width: 100%;
+            border-radius: 12px;
+            margin-top: 20px;
+            cursor: pointer; /* pokazuje da je klikabilno */
+            transition: transform 0.3s ease;
+        }
+
+        .section img:hover {
+            transform: scale(1.02);
+        }
+
+        .champion-grid, .region-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .champion, .region {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .champion:hover, .region:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 6px 20px rgba(176, 0, 0, 0.35);
+        }
+
+        .champion img, .region img {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: #b00000;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            font-size: 15px;
+            border-top: 3px solid #900000;
+            letter-spacing: 0.5px;
+        }
+
+        footer p {
+            margin: 6px 0;
+        }
+
+        /* LIGHTBOX STIL */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .lightbox-overlay img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+
+        @media (max-width: 700px) {
+            header img {
+                width: 120px;
+                left: 15px;
+            }
+            header {
+                font-size: 36px;
+                padding: 40px 0 35px 0;
+            }
+            nav {
+                font-size: 16px;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="https://www.riotgames.com/darkroom/800/87521fcaeca5867538ae7f46ac152740:2f8144e17957078916e41d2410c111c3/002-rg-2021-full-lockup-offwhite.jpg" 
+         alt="LoL logo">
+    League of Legends
+</header>
+
+<nav>
+    <a href="#o-igri">O igri</a><span class="divider">|</span>
+    <a href="#mapa">Mapa</a><span class="divider">|</span>
+    <a href="#junaci">Junaci</a><span class="divider">|</span>
+    <a href="#regije">Regije</a><span class="divider">|</span>
+    <a href="#kontakt">Kontakt</a>
+</nav>
+
+<div class="container">
+    <div class="section" id="o-igri">
+        <h2>O igri</h2>
+        <p>League of Legends (LoL) je popularna taktička online igra kompanije Riot Games. Dva tima od po pet igrača bore se na mapi pod nazivom Summoner’s Rift, koristeći jedinstvene šampione koji posjeduju posebne sposobnosti i stil borbe.</p>
+        <img src="https://cmsassets.rgpub.io/sanity/images/dsfx7636/news/b2b1b52b545df112bc346a88fe8058e3f58d79f8-1920x1080.jpg" alt="League of Legends slika" class="lightbox-img">
+    </div>
+
+    <div class="section" id="mapa">
+        <h2>Mapa: Summoner’s Rift</h2>
+        <p>Summoner’s Rift je glavna mapa u igri, sa tri staze (top, mid i bot) i džunglom između njih. Cilj igre je uništiti protivnički Nexus i zaštititi vlastiti.</p>
+        <img src="https://s1.dmcdn.net/v/Ton721YHjK750IFiP/x1080" alt="Summoner's Rift mapa" class="lightbox-img">
+    </div>
+
+    <div class="section" id="junaci">
+        <h2>Izabrani junaci</h2>
+        <div class="champion-grid">
+            <div class="champion">
+                <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg" alt="Yasuo" class="lightbox-img">
+                <h3>Yasuo</h3>
+                <p>Mačevalac iz Jonije koji koristi vjetar kao oružje. Njegova priča govori o iskupljenju i časti.</p>
+            </div>
+            <div class="champion">
+                <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_0.jpg" alt="Ahri" class="lightbox-img">
+                <h3>Ahri</h3>
+                <p>Lisica sa devet repova iz Jonije, koja koristi čarolije i emocije svojih protivnika u borbi.</p>
+            </div>
+            <div class="champion">
+                <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Garen_0.jpg" alt="Garen" class="lightbox-img">
+                <h3>Garen</h3>
+                <p>Simbol časti i discipline Demacije, poznat po svom viteškom duhu i snazi.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="regije">
+        <h2>Regije Runeterre</h2>
+        <p>Svaki šampion potiče iz posebne regije svijeta Runeterre. Regije oblikuju njihove sposobnosti, ideale i sukobe.</p>
+        <div class="region-grid">
+            <div class="region">
+                <img src="https://support-legendsofruneterra.riotgames.com/hc/article_attachments/8721567432211" alt="Ionia" class="lightbox-img">
+                <h3>Ionia</h3>
+                <p>Zemlja balansa, prirode i magije. Dom mnogih duhovnih ratnika poput Yasuoa i Ahri.</p>
+            </div>
+            <div class="region">
+                <img src="https://wiki.leagueoflegends.com/en-us/images/Demacia_Hall_Of_Valor.jpg?a6a06" alt="Demacia" class="lightbox-img">
+                <h3>Demacia</h3>
+                <p>Kraljevstvo hrabrosti i discipline. Garen je njegov najpoznatiji heroj i zaštitnik.</p>
+            </div>
+            <div class="region">
+                <img src="https://wiki.leagueoflegends.com/en-us/images/thumb/Noxus_LoR_Background.jpg/800px-Noxus_LoR_Background.jpg?18f05" alt="Noxus" class="lightbox-img">
+                <h3>Noxus</h3>
+                <p>Imperija koja cijeni snagu i moć iznad svega. Samo najjači opstaju.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="kontakt">
+        <h2>Kontakt</h2>
+        <p>Ova stranica pruža osnovne informacije o igri League of Legends.</p>
+        <p><b>Web:</b> <a href="https://www.leagueoflegends.com/" target="_blank" style="color:#b00000; text-decoration:none;">leagueoflegends.com</a></p>
+    </div>
+</div>
+
+<footer>
+    <p>© 2025 League of Legends Informativna Stranica | Amar Majdančić</p> 
+</footer>
+
+<!-- LIGHTBOX SCRIPT -->
+<div class="lightbox-overlay" id="lightboxOverlay">
+    <img src="" alt="Uvećana slika">
+</div>
+
+<script>
+    const lightboxImages = document.querySelectorAll('.lightbox-img');
+    const overlay = document.getElementById('lightboxOverlay');
+    const overlayImg = overlay.querySelector('img');
+
+    lightboxImages.forEach(img => {
+        img.addEventListener('click', () => {
+            overlay.style.display = 'flex';
+            overlayImg.src = img.src;
+        });
+    });
+
+    overlay.addEventListener('click', () => {
+        overlay.style.display = 'none';
+        overlayImg.src = '';
+    });
+</script>
+
+</body>
+</html>
