@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoL Store | Premium UI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Beaufort+for+LoL:ital,wght@0,400;0,700;1,700&family=Spiegel:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        :root {
+            --gold-light: #f0e6d2; --gold-medium: #c8aa6e; --gold-dark: #785a28;
+            --blue-1: #00eeff; --blue-2: #005a82; --dark-1: #010a13;
+            --dark-2: #091428; --dark-3: #1e2328; --be-color: #00cfbc;
+            --rarity-legendary: #ff8000; --rarity-epic: #9b59b6; --rarity-mythic: #d536f5;
+            --glow: rgba(0, 238, 255, 0.3);
+        }
+
+        /* Skroler - League Style */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--dark-1); }
+        ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 10px; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+        body { background: var(--dark-1); color: var(--gold-light); font-family: 'Spiegel', sans-serif; overflow: hidden; height: 100vh; }
+
+        /* --- IKONICE --- */
+        .icon-rp, .icon-be { width: 20px; height: 20px; display: inline-block; background-size: contain; background-repeat: no-repeat; vertical-align: middle; }
+        .icon-rp { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23ffffff' d='M50 5L10 50l40 45 40-45z'/%3E%3Cpath fill='%23c8aa6e' d='M50 15L20 50l30 35 30-35z'/%3E%3C/svg%3E"); }
+        .icon-be { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%2300cfbc' d='M50 5L15 30v40l35 25 35-25V30z'/%3E%3Cpath fill='%23005a82' d='M50 20L25 35v30l25 15 25-15V35z'/%3E%3C/svg%3E"); }
+
+        /* --- HEADER --- */
+        .header { 
+            height: 85px; background: linear-gradient(to bottom, #010a13, #091428); 
+            border-bottom: 2px solid var(--gold-dark); display: flex; align-items: center; 
+            padding: 0 40px; justify-content: space-between; z-index: 1000; position: relative;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+        .logo { 
+            font-family: 'Beaufort for LoL'; font-size: 22px; color: var(--gold-medium); 
+            letter-spacing: 3px; cursor: pointer; transition: 0.3s;
+        }
+        .logo:hover { color: #fff; text-shadow: 0 0 15px var(--gold-medium); }
+
+        .nav-group { display: flex; gap: 30px; }
+        .nav-link { 
+            font-family: 'Beaufort for LoL'; color: var(--gold-medium); text-decoration: none; 
+            text-transform: uppercase; letter-spacing: 2px; font-size: 14px; padding: 10px 0; 
+            transition: 0.3s; cursor: pointer; border-bottom: 2px solid transparent; 
+        }
+        .nav-link:hover, .nav-link.active { color: #fff; border-bottom: 2px solid var(--blue-1); text-shadow: 0 0 10px var(--blue-1); }
+
+        .wallet { 
+            display: flex; gap: 20px; background: rgba(0,0,0,0.7); padding: 10px 25px; 
+            border: 1px solid var(--gold-dark); border-radius: 40px; backdrop-filter: blur(5px);
+        }
+
+        /* --- HOME SCREEN --- */
+        #home-view {
+            height: calc(100vh - 85px);
+            background: linear-gradient(rgba(1, 10, 19, 0.4), rgba(1, 10, 19, 0.9)), 
+                        url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Kaisa_16.jpg') center/cover;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; position: relative;
+        }
+        .home-title { font-family: 'Beaufort for LoL'; font-size: 64px; color: #fff; text-shadow: 0 0 30px rgba(0,0,0,0.8); margin-bottom: 10px; }
+        .home-subtitle { font-size: 20px; color: var(--gold-medium); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 40px; }
+        .enter-btn {
+            padding: 18px 60px; background: var(--blue-2); border: 1px solid var(--blue-1);
+            color: #fff; font-family: 'Beaufort for LoL'; font-size: 24px; cursor: pointer;
+            transition: 0.3s; box-shadow: 0 0 20px var(--glow);
+        }
+        .enter-btn:hover { background: var(--blue-1); color: #000; box-shadow: 0 0 40px var(--blue-1); transform: scale(1.05); }
+
+        /* --- STORE CONTENT (Hidden by default) --- */
+        #store-view-container { display: none; }
+        .main-content { display: flex; height: calc(100vh - 85px); }
+
+        .sidebar { 
+            width: 280px; background: rgba(1, 10, 19, 0.95); border-right: 1px solid var(--gold-dark); 
+            padding: 30px; box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+        }
+        .sidebar-title { color: var(--gold-dark); font-family: 'Beaufort for LoL'; font-size: 12px; letter-spacing: 2px; margin: 25px 0 15px 0; display: block; text-transform: uppercase; }
+        
+        .filter-link { 
+            display: block; color: #888; text-decoration: none; padding: 12px 0; 
+            font-size: 13px; text-transform: uppercase; transition: 0.3s; cursor: pointer;
+            border-left: 2px solid transparent; padding-left: 15px;
+        }
+        .filter-link:hover { color: #fff; background: rgba(200, 170, 110, 0.05); }
+        .filter-link.active { color: var(--blue-1); border-left: 2px solid var(--blue-1); background: linear-gradient(to right, rgba(0, 238, 255, 0.1), transparent); }
+
+        .store-view { flex: 1; padding: 40px; overflow-y: scroll; background: radial-gradient(circle at center, #0a1428 0%, #010a13 100%); }
+        .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; }
+
+        /* --- CARDS --- */
+        .item-card { 
+            background: #1e2328; border: 1px solid var(--gold-dark); position: relative; 
+            cursor: pointer; transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
+            animation: fadeInUp 0.5s ease forwards; overflow: hidden;
+        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .item-card:hover { 
+            transform: translateY(-8px); border-color: var(--blue-1); 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px var(--glow);
+            z-index: 5;
+        }
+        
+        .splash-wrap { width: 100%; height: 160px; overflow: hidden; background: #000; position: relative; }
+        .splash-wrap img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.6s; }
+        .item-card:hover .splash-wrap img { opacity: 1; transform: scale(1.1); }
+        
+        .rarity-tag { 
+            position: absolute; top: 10px; right: 10px; font-size: 10px; padding: 3px 8px; 
+            background: rgba(0,0,0,0.85); border: 1px solid; border-radius: 2px; 
+            text-transform: uppercase; font-weight: bold; letter-spacing: 1px;
+        }
+
+        .item-info { padding: 18px; border-top: 1px solid var(--gold-dark); background: #1e2328; }
+        .item-name { font-family: 'Beaufort for LoL'; font-size: 16px; color: #fff; margin-bottom: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* --- MODAL --- */
+        .overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.85); display: none; align-items: center; 
+            justify-content: center; z-index: 2000; backdrop-filter: blur(8px);
+        }
+        .modal { 
+            width: 480px; background: var(--dark-2); border: 2px solid var(--gold-medium); 
+            padding: 40px; text-align: center; position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,1); animation: modalIn 0.3s ease-out;
+        }
+        @keyframes modalIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .modal-img { width: 100%; border: 1px solid var(--gold-dark); margin-bottom: 25px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        
+        .buy-btn { 
+            width: 100%; padding: 16px; background: linear-gradient(to bottom, var(--blue-2), #004a6a); 
+            border: 1px solid var(--blue-1); color: white; font-family: 'Beaufort for LoL'; 
+            font-size: 18px; cursor: pointer; transition: 0.3s; letter-spacing: 2px;
+        }
+        .buy-btn:hover { background: var(--blue-1); color: #000; box-shadow: 0 0 20px var(--blue-1); }
+
+        .cancel-btn { background:none; border:none; color:var(--gold-dark); margin-top:20px; cursor:pointer; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; transition: 0.3s;}
+        .cancel-btn:hover { color: #fff; }
+
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="logo" onclick="goHome()">LEAGUE CLIENT</div>
+    <nav class="nav-group">
+        <div class="nav-link active" id="nav-home" onclick="goHome()">Home</div>
+        <div class="nav-link" id="nav-store" onclick="goStore()">Store</div>
+        <div class="nav-link" onclick="alert('Loot system coming soon!')">Loot</div>
+    </nav>
+    <div class="wallet">
+        <div class="currency-item"><div class="icon-rp"></div><span id="rp-val">5,400</span></div>
+        <div class="currency-item"><div class="icon-be"></div><span id="be-val" style="color: var(--be-color);">128,450</span></div>
+    </div>
+</div>
+
+<section id="home-view">
+    <h1 class="home-title">WELCOME, SUMMONER</h1>
+    <p class="home-subtitle">Season 2026 is Live • New Mythic Content Available</p>
+    <button class="enter-btn" onclick="goStore()">ENTER STORE</button>
+</section>
+
+<div id="store-view-container">
+    <div class="main-content">
+        <aside class="sidebar">
+            <span class="sidebar-title">Sort By Rarity</span>
+            <div class="filter-link active" id="rarity-all" onclick="filterRarity('all', this)">All Items</div>
+            <div class="filter-link" onclick="filterRarity('legendary', this)" style="color: var(--rarity-legendary);">Legendary</div>
+            <div class="filter-link" onclick="filterRarity('epic', this)" style="color: var(--rarity-epic);">Epic</div>
+            <div class="filter-link" onclick="filterRarity('mythic', this)" style="color: var(--rarity-mythic);">Mythic</div>
+
+            <span class="sidebar-title">Quick Filters</span>
+            <div class="filter-link" onclick="filterFeatured(this)">Recently Added</div>
+            <div class="filter-link" onclick="filterPrice(this)">Budget Picks</div>
+        </aside>
+
+        <main class="store-view">
+            <div class="store-grid" id="storeGrid"></div>
+        </main>
+    </div>
+</div>
+
+<div class="overlay" id="pModal">
+    <div class="modal">
+        <h2 id="m-name" style="font-family: 'Beaufort for LoL'; margin-bottom: 15px; color: #fff; letter-spacing: 1px;">ITEM NAME</h2>
+        <img id="m-img" class="modal-img" src="">
+        <div style="display: flex; justify-content: center; gap: 12px; font-size: 26px; margin-bottom: 25px;">
+            <div id="m-icon" class="icon-rp"></div>
+            <span id="m-price" style="font-weight: bold;">0</span>
+        </div>
+        <button class="buy-btn" onclick="confirmPurchase()">UNLOCK NOW</button>
+        <button class="cancel-btn" onclick="$('#pModal').hide()">Go Back</button>
+    </div>
+</div>
+
+<script>
+    const catalog = [
+        { name: "Soul Fighter Samira", price: 3250, type: "Skin", rarity: "mythic", curr: "rp", img: "Samira_10", featured: true },
+        { name: "Nightbringer Yasuo", price: 1820, type: "Skin", rarity: "legendary", curr: "rp", img: "Yasuo_9", featured: true },
+        { name: "God King Garen", price: 1820, type: "Skin", rarity: "legendary", curr: "rp", img: "Garen_14", featured: false },
+        { name: "K/DA Kai'Sa", price: 1350, type: "Skin", rarity: "epic", curr: "rp", img: "Kaisa_16", featured: true },
+        { name: "Yone", price: 4800, type: "Champion", rarity: "basic", curr: "be", img: "Yone_0", featured: false },
+        { name: "Dark Cosmic Jhin", price: 1820, type: "Skin", rarity: "legendary", curr: "rp", img: "Jhin_5", featured: true },
+        { name: "Star Guardian Jinx", price: 1820, type: "Skin", rarity: "legendary", curr: "rp", img: "Jinx_20", featured: false },
+        { name: "Briar", price: 6300, type: "Champion", rarity: "basic", curr: "be", img: "Briar_0", featured: true },
+        { name: "Empyrean Jax", price: 1350, type: "Skin", rarity: "epic", curr: "rp", img: "Jax_14", featured: false },
+        { name: "Winterblessed Diana", price: 1820, type: "Skin", rarity: "legendary", curr: "rp", img: "Diana_37", featured: true },
+        { name: "Project: Yi", price: 1820, type: "Skin", rarity: "legendary", curr: "rp", img: "MasterYi_9", featured: false },
+        { name: "Assassin Master Yi", price: 390, type: "Skin", rarity: "basic", curr: "rp", img: "MasterYi_1", featured: false }
+    ];
+
+    let currentFilter = { tab: 'featured', rarity: 'all' };
+
+    // --- NAVIGACIJA ---
+    window.goHome = () => {
+        $('#store-view-container').fadeOut(200, function() {
+            $('#home-view').fadeIn(300).css('display', 'flex');
+        });
+        $('.nav-link').removeClass('active');
+        $('#nav-home').addClass('active');
+    };
+
+    window.goStore = () => {
+        $('#home-view').fadeOut(200, function() {
+            $('#store-view-container').fadeIn(300);
+            render();
+        });
+        $('.nav-link').removeClass('active');
+        $('#nav-store').addClass('active');
+    };
+
+    // --- STORE LOGIKA ---
+    function render() {
+        const grid = $('#storeGrid').empty();
+        let filtered = catalog.filter(item => {
+            const tabMatch = (currentFilter.tab === 'featured' ? item.featured : item.type === currentFilter.tab);
+            const rarityMatch = (currentFilter.rarity === 'all' ? true : item.rarity === currentFilter.rarity);
+            return tabMatch && rarityMatch;
+        });
+
+        filtered.forEach((item, index) => {
+            const rarityColor = item.rarity === 'legendary' ? 'var(--rarity-legendary)' : (item.rarity === 'epic' ? 'var(--rarity-epic)' : (item.rarity === 'mythic' ? 'var(--rarity-mythic)' : 'var(--gold-dark)'));
+            
+            const card = $(`
+                <div class="item-card" style="animation-delay: ${index * 0.05}s" onclick="openBuy('${item.name}')">
+                    <div class="splash-wrap">
+                        <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${item.img}.jpg">
+                        <div class="rarity-tag" style="border-color: ${rarityColor}; color: ${rarityColor}">${item.rarity}</div>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name">${item.name}</div>
+                        <div style="display:flex; align-items:center; gap:8px; font-weight:bold;">
+                            <div class="icon-${item.curr}"></div>
+                            <span style="color: ${item.curr === 'be' ? 'var(--be-color)' : '#fff'}">${item.price.toLocaleString()}</span>
+                        </div>
+                    </div>
+                </div>
+            `);
+            grid.append(card);
+        });
+    }
+
+    window.mainTab = (tab, el) => {
+        $('.nav-link').removeClass('active'); $(el).addClass('active');
+        currentFilter.tab = tab;
+        render();
+    };
+
+    window.filterRarity = (rarity, el) => {
+        $('.filter-link').removeClass('active'); $(el).addClass('active');
+        currentFilter.rarity = rarity;
+        render();
+    };
+
+    window.filterFeatured = (el) => {
+        $('.filter-link').removeClass('active'); $(el).addClass('active');
+        currentFilter.tab = 'featured';
+        render();
+    };
+
+    window.filterPrice = (el) => {
+        $('.filter-link').removeClass('active'); $(el).addClass('active');
+        currentFilter.rarity = 'all'; 
+        // Render budget items (simplified for demo)
+        render();
+    };
+
+    let activeItem = null;
+    window.openBuy = (name) => {
+        activeItem = catalog.find(i => i.name === name);
+        $('#m-name').text(activeItem.name);
+        $('#m-price').text(activeItem.price.toLocaleString());
+        $('#m-img').attr('src', `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${activeItem.img}.jpg`);
+        $('#m-icon').removeClass('icon-rp icon-be').addClass('icon-' + activeItem.curr);
+        $('#pModal').css('display', 'flex').hide().fadeIn(200);
+    };
+
+    window.confirmPurchase = () => { 
+        alert("Transaction Successful: " + activeItem.name + " is now yours!"); 
+        $('#pModal').fadeOut(200); 
+    };
+
+    // Inicijalno sakrij store i pokaži home
+    $(document).ready(function() {
+        $('#store-view-container').hide();
+    });
+</script>
+</body>
+</html>
