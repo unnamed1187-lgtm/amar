@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hextech Store | Fixed Images</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        :root {
+            --gold: #c89b3c;
+            --blue: #0ac8b9;
+            --dark: #010a13;
+            --panel: rgba(1, 10, 19, 0.95);
+        }
+
+        body {
+            margin: 0; background: radial-gradient(circle, #091428 0%, #010a13 100%);
+            color: white; font-family: 'Poppins', sans-serif; min-height: 100vh;
+        }
+
+        /* Navigacija */
+        .top-bar {
+            background: #000; border-bottom: 2px solid var(--gold);
+            padding: 15px 50px; display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .currency { display: flex; align-items: center; gap: 10px; color: var(--gold); font-weight: bold; }
+        .currency img { width: 20px; height: 20px; }
+
+        /* Layout */
+        .main-container { display: flex; padding: 30px; gap: 30px; max-width: 1400px; margin: 0 auto; }
+
+        /* Sidebar */
+        .sidebar { width: 250px; background: var(--panel); border: 1px solid var(--gold); padding: 20px; height: fit-content; }
+        .cat-btn {
+            display: block; width: 100%; padding: 12px; background: none; border: none;
+            color: #888; text-align: left; cursor: pointer; text-transform: uppercase; transition: 0.3s;
+        }
+        .cat-btn.active, .cat-btn:hover { color: var(--gold); border-left: 3px solid var(--gold); background: rgba(200,155,60,0.1); }
+
+        /* Grid */
+        .shop-grid { flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+
+        .shop-card {
+            background: rgba(1, 10, 19, 0.8); border: 1px solid #785a28; padding: 20px;
+            text-align: center; border-radius: 4px; transition: 0.4s; position: relative;
+        }
+        .shop-card:hover { transform: translateY(-5px); border-color: var(--blue); box-shadow: 0 0 20px rgba(10, 200, 185, 0.2); }
+
+        /* IMAGE FIX - Centriranje i veličina */
+        .img-container {
+            width: 150px; height: 150px; margin: 0 auto 15px auto;
+            display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle, rgba(10, 200, 185, 0.1) 0%, transparent 70%);
+        }
+        .shop-card img { 
+            max-width: 130px; max-height: 130px; 
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+            object-fit: contain;
+        }
+
+        .shop-card h4 { font-family: 'Cinzel', serif; font-size: 14px; color: #f0e6d2; margin: 10px 0; height: 40px; }
+
+        .price-btn {
+            background: linear-gradient(to bottom, #1e2328, #010a13);
+            border: 1px solid var(--gold); color: var(--gold);
+            padding: 10px; width: 100%; cursor: pointer; font-weight: bold;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .price-btn:hover { background: var(--gold); color: black; }
+
+        #toast {
+            position: fixed; bottom: 20px; right: 20px; background: var(--blue);
+            color: black; padding: 15px 30px; font-weight: bold; display: none; z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <h2 style="font-family: 'Cinzel'; color: var(--gold); margin: 0;">Loot Emporium</h2>
+    <div style="display: flex; gap: 20px;">
+        <div class="currency"><img src="https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/extras/currencies/rp.png"> 5,000</div>
+        <div class="currency"><img src="https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/extras/currencies/blueessence.png"> 12,000</div>
+    </div>
+</div>
+
+<div class="main-container">
+    <aside class="sidebar">
+        <button class="cat-btn active" onclick="filter('all')">Sve</button>
+        <button class="cat-btn" onclick="filter('chest')">Škrinje</button>
+        <button class="cat-btn" onclick="filter('key')">Ključevi</button>
+        <button class="cat-btn" onclick="filter('bundle')">Paketi</button>
+    </aside>
+
+    <main class="shop-grid" id="grid"></main>
+</div>
+
+<div id="toast">Predmet kupljen!</div>
+
+<script>
+    // Koristimo slike sa stabilnih GitHub Raw URL-ova
+    const items = [
+        { type: 'chest', name: 'Hextech Chest', price: 125, img: 'https://raw.githubusercontent.com/RiotGames/developer-relations/master/assets/notifications/hextech-chest.png' },
+        { type: 'key', name: 'Hextech Key', price: 125, img: 'https://raw.githubusercontent.com/RiotGames/developer-relations/master/assets/notifications/hextech-key.png' },
+        { type: 'chest', name: 'Masterwork Chest', price: 165, img: 'https://static.wikia.nocookie.net/leagueoflegends/images/a/a0/Masterwork_Chest.png' },
+        { type: 'bundle', name: 'Chest + Key Bundle', price: 195, img: 'https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/extras/loot/hextech_chest_key_bundle.png' },
+        { type: 'bundle', name: '10 Masterwork Set', price: 2250, img: 'https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/extras/loot/masterwork_chest_10_bundle.png' }
+    ];
+
+    function display(list) {
+        const grid = $('#grid');
+        grid.hide().empty();
+        
+        list.forEach(i => {
+            grid.append(`
+                <div class="shop-card">
+                    <div class="img-container">
+                        <img src="${i.img}" onerror="this.src='https://raw.githubusercontent.com/RiotGames/developer-relations/master/assets/notifications/hextech-chest.png'">
+                    </div>
+                    <h4>${i.name}</h4>
+                    <button class="price-btn" onclick="buy()">
+                        <img src="https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master/extras/currencies/rp.png"> ${i.price}
+                    </button>
+                </div>
+            `);
+        });
+        grid.fadeIn(400);
+    }
+
+    function filter(type) {
+        $('.cat-btn').removeClass('active');
+        $(`button[onclick="filter('${type}')"]`).addClass('active');
+        const filtered = type === 'all' ? items : items.filter(i => i.type === type);
+        display(filtered);
+    }
+
+    function buy() {
+        $('#toast').fadeIn().delay(1500).fadeOut();
+    }
+
+    // Pokreni odmah
+    $(document).ready(() => display(items));
+</script>
+
+</body>
+</html>
