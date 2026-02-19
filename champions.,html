@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Champions | Collection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Beaufort+for+LoL:ital,wght@0,400;0,700;1,700&family=Spiegel:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* ============================================================
+           CHAMPIONS COLLECTION ENGINE - HEXTECH DESIGN
+           ============================================================ */
+        :root {
+            --gold-light: #f0e6d2; --gold-medium: #c8aa6e; --gold-dark: #785a28;
+            --blue-1: #00eeff; --blue-2: #005a82; --dark-1: #010a13;
+            --dark-2: #091428;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            background: var(--dark-1); color: var(--gold-light); 
+            font-family: 'Spiegel', sans-serif; overflow: hidden;
+        }
+
+        /* Background */
+        .collection-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: linear-gradient(rgba(1, 10, 19, 0.9), rgba(1, 10, 19, 0.9)), 
+                        url('https://images.contentstack.io/v3/assets/blt731eb9a2aa3f784f/blt56aa916664d603a1/5e9766627c527e02e86d268d/LoL_Lux_Lux_Splash.jpg') center/cover;
+        }
+
+        /* Navigacija (ista kao na home) */
+        .main-nav {
+            height: 80px; background: rgba(1, 10, 19, 0.95); border-bottom: 1px solid var(--gold-dark);
+            display: flex; align-items: center; padding: 0 40px;
+        }
+        .nav-links { display: flex; gap: 30px; margin-left: 50px; }
+        .nav-links a { 
+            color: var(--gold-medium); text-decoration: none; text-transform: uppercase; 
+            font-family: 'Beaufort for LoL'; font-weight: bold; letter-spacing: 1.5px;
+            font-size: 14px; transition: 0.3s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: #fff; text-shadow: 0 0 10px var(--blue-1); }
+
+        .container { display: flex; height: calc(100vh - 80px); }
+
+        /* SIDEBAR FILTERI */
+        .sidebar {
+            width: 300px; border-right: 1px solid var(--gold-dark); padding: 40px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .search-box {
+            width: 100%; background: #1e2328; border: 1px solid var(--gold-dark);
+            padding: 12px; color: #fff; margin-bottom: 30px; font-family: 'Spiegel';
+        }
+        .filter-group h4 { font-family: 'Beaufort for LoL'; color: var(--gold-medium); margin-bottom: 20px; letter-spacing: 2px; }
+        .filter-btn {
+            display: block; width: 100%; text-align: left; background: none; border: none;
+            color: #888; padding: 10px 0; cursor: pointer; font-size: 13px;
+            text-transform: uppercase; letter-spacing: 1px; transition: 0.2s;
+        }
+        .filter-btn:hover, .filter-btn.active { color: var(--blue-1); padding-left: 10px; }
+
+        /* CHAMPION GRID */
+        .champion-grid-wrapper { flex: 1; padding: 40px; overflow-y: scroll; }
+        .champion-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 25px;
+        }
+
+        .champ-card {
+            position: relative; aspect-ratio: 1/1.5; border: 1px solid var(--gold-dark);
+            overflow: hidden; cursor: pointer; transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .champ-card:hover { 
+            transform: scale(1.05); border-color: var(--blue-1);
+            box-shadow: 0 0 20px rgba(0, 238, 255, 0.4);
+        }
+        .champ-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .champ-card:hover img { transform: scale(1.1); filter: saturate(1.2); }
+
+        .champ-info {
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px;
+            background: linear-gradient(transparent, rgba(1, 10, 19, 0.95));
+            text-align: center;
+        }
+        .champ-name { font-family: 'Beaufort for LoL'; font-size: 18px; color: #fff; text-transform: uppercase; }
+        
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--dark-1); }
+        ::-webkit-scrollbar-thumb { background: var(--gold-dark); }
+    </style>
+</head>
+<body>
+
+<div class="collection-bg"></div>
+
+<nav class="main-nav">
+    <div style="color: var(--blue-1); font-family: 'Beaufort for LoL'; font-size: 24px; font-weight: bold;">L</div>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="champions.html" class="active">Champions</a>
+        <a href="loot.html">Loot</a>
+        <a href="profile.html">Profile</a>
+    </div>
+</nav>
+
+<div class="container">
+    <aside class="sidebar">
+        <input type="text" class="search-box" id="champSearch" placeholder="SEARCH CHAMPIONS...">
+        
+        <div class="filter-group">
+            <h4>ROLES</h4>
+            <button class="filter-btn active" data-role="all">All Champions</button>
+            <button class="filter-btn" data-role="assassin">Assassins</button>
+            <button class="filter-btn" data-role="fighter">Fighters</button>
+            <button class="filter-btn" data-role="mage">Mages</button>
+            <button class="filter-btn" data-role="marksman">Marksmen</button>
+            <button class="filter-btn" data-role="support">Supports</button>
+            <button class="filter-btn" data-role="tank">Tanks</button>
+        </div>
+    </aside>
+
+    <main class="champion-grid-wrapper">
+        <div class="champion-grid" id="champGrid">
+            </div>
+    </main>
+</div>
+
+<script>
+    // LISTA ŠAMPIONA SA PODACIMA
+    const champions = [
+        { id: "Aatrox", name: "Aatrox", role: "fighter" },
+        { id: "Ahri", name: "Ahri", role: "mage" },
+        { id: "Akali", name: "Akali", role: "assassin" },
+        { id: "Ashe", name: "Ashe", role: "marksman" },
+        { id: "Braum", name: "Braum", role: "support" },
+        { id: "Darius", name: "Darius", role: "fighter" },
+        { id: "Jinx", name: "Jinx", role: "marksman" },
+        { id: "Lux", name: "Lux", role: "mage" },
+        { id: "Malphite", name: "Malphite", role: "tank" },
+        { id: "Pyke", name: "Pyke", role: "assassin" },
+        { id: "Sett", name: "Sett", role: "fighter" },
+        { id: "Thresh", name: "Thresh", role: "support" },
+        { id: "Vayne", name: "Vayne", role: "marksman" },
+        { id: "Yasuo", name: "Yasuo", role: "fighter" },
+        { id: "Yone", name: "Yone", role: "assassin" },
+        { id: "Zed", name: "Zed", role: "assassin" }
+    ];
+
+    function renderChampions(filterRole = 'all', searchTerm = '') {
+        const grid = $('#champGrid');
+        grid.empty();
+
+        champions.forEach(champ => {
+            // Filtriranje po roli
+            if (filterRole !== 'all' && champ.role !== filterRole) return;
+            
+            // Filtriranje po searchu
+            if (searchTerm && !champ.name.toLowerCase().includes(searchTerm.toLowerCase())) return;
+
+            const card = `
+                <div class="champ-card" data-role="${champ.role}">
+                    <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champ.id}_0.jpg" alt="${champ.name}">
+                    <div class="champ-info">
+                        <div class="champ-name">${champ.name}</div>
+                        <div style="font-size: 10px; color: var(--gold-medium);">${champ.role.toUpperCase()}</div>
+                    </div>
+                </div>
+            `;
+            grid.append(card);
+        });
+    }
+
+    // LOGIKA ZA FILTERE
+    $('.filter-btn').click(function() {
+        $('.filter-btn').removeClass('active');
+        $(this).addClass('active');
+        
+        const role = $(this).data('role');
+        renderChampions(role, $('#champSearch').val());
+    });
+
+    // LOGIKA ZA SEARCH
+    $('#champSearch').on('input', function() {
+        const activeRole = $('.filter-btn.active').data('role');
+        renderChampions(activeRole, $(this).val());
+    });
+
+    // Inicijalno renderovanje
+    $(document).ready(() => {
+        renderChampions();
+    });
+</script>
+
+</body>
+</html>		
