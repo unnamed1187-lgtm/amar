@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summoner Profile | Amar Majdančić</title>
+    <link href="https://fonts.googleapis.com/css2?family=Beaufort+for+LoL:ital,wght@0,400;0,700;1,700&family=Spiegel:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* ============================================================
+           ULTIMATE PROFILE ENGINE - 600+ LINES OF POWER
+           ============================================================ */
+        :root {
+            --gold-light: #f0e6d2; --gold-medium: #c8aa6e; --gold-dark: #785a28;
+            --blue-1: #00eeff; --blue-2: #005a82; --dark-1: #010a13;
+            --dark-2: #091428; --win: #284c39; --loss: #4e1e1e;
+            --modal-bg: rgba(1, 10, 19, 0.98);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            background: var(--dark-1); color: var(--gold-light); 
+            font-family: 'Spiegel', sans-serif; overflow-x: hidden;
+        }
+
+        /* Ambient Background */
+        .profile-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: linear-gradient(rgba(1, 10, 19, 0.85), rgba(9, 20, 40, 0.95)), 
+                        url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yone_0.jpg') center/cover;
+            filter: blur(8px); transform: scale(1.1);
+        }
+
+        .simple-nav {
+            height: 60px; background: rgba(0,0,0,0.5); border-bottom: 1px solid var(--gold-dark);
+            display: flex; align-items: center; padding: 0 40px; position: sticky; top: 0; z-index: 100;
+        }
+        .back-link {
+            color: var(--gold-medium); text-decoration: none; font-family: 'Beaufort for LoL';
+            text-transform: uppercase; font-weight: bold; letter-spacing: 2px;
+            display: flex; align-items: center; gap: 10px; transition: 0.3s;
+        }
+        .back-link:hover { color: #fff; transform: translateX(-5px); }
+
+        .profile-container { max-width: 1400px; margin: 0 auto; padding: 40px; }
+
+        /* HEADER MODUL */
+        .user-header {
+            display: flex; align-items: center; gap: 40px; padding: 40px;
+            background: rgba(255,255,255,0.02); border: 1px solid var(--gold-dark);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); margin-bottom: 40px;
+        }
+        .icon-box { position: relative; width: 160px; height: 160px; }
+        .icon-box img { width: 100%; border: 4px solid var(--gold-medium); transition: 0.3s; }
+        .lvl-tag {
+            position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
+            background: var(--dark-1); border: 2px solid var(--gold-medium);
+            padding: 2px 15px; font-weight: bold; font-size: 14px; z-index: 2;
+        }
+
+        .user-info h1 { font-family: 'Beaufort for LoL'; font-size: 50px; font-style: italic; text-transform: uppercase; }
+        .user-info p { color: var(--blue-1); letter-spacing: 2px; font-weight: bold; }
+        #user-quote { margin-top: 10px; font-size: 14px; color: #888; font-style: italic; }
+
+        .btn-edit {
+            background: transparent; border: 1px solid var(--gold-medium); 
+            color: var(--gold-medium); padding: 10px 25px; cursor: pointer;
+            font-family: 'Beaufort for LoL'; font-weight: bold; letter-spacing: 1px;
+            transition: 0.3s;
+        }
+        .btn-edit:hover { background: var(--gold-medium); color: var(--dark-1); box-shadow: 0 0 15px var(--gold-medium); }
+
+        /* EDIT MODAL */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 1000;
+        }
+        .hextech-modal {
+            width: 500px; background: var(--modal-bg); border: 2px solid var(--gold-medium);
+            padding: 30px; box-shadow: 0 0 50px rgba(0, 238, 255, 0.2); position: relative;
+        }
+        .modal-title { font-family: 'Beaufort for LoL'; font-size: 22px; color: var(--gold-medium); margin-bottom: 20px; border-bottom: 1px solid var(--gold-dark); padding-bottom: 10px; }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 11px; color: var(--gold-medium); margin-bottom: 5px; text-transform: uppercase; }
+        .form-group input { 
+            width: 100%; background: #1e2328; border: 1px solid var(--gold-dark); 
+            padding: 10px; color: #fff; font-family: 'Spiegel'; 
+        }
+
+        /* Avatar Selection Grid */
+        .avatar-selector {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+            margin: 15px 0; max-height: 150px; overflow-y: auto; padding: 10px;
+            background: rgba(0,0,0,0.3); border: 1px solid var(--gold-dark);
+        }
+        .avatar-option {
+            width: 100%; cursor: pointer; border: 2px solid transparent; transition: 0.2s;
+        }
+        .avatar-option:hover { border-color: var(--blue-1); transform: scale(1.05); }
+        .avatar-option.selected { border-color: var(--blue-1); box-shadow: 0 0 10px var(--blue-1); }
+
+        .modal-actions { display: flex; gap: 15px; margin-top: 25px; }
+        .btn-save { flex: 1; background: var(--blue-2); border: 1px solid var(--blue-1); color: #fff; padding: 12px; cursor: pointer; font-weight: bold; }
+        .btn-cancel { flex: 1; background: transparent; border: 1px solid #555; color: #888; padding: 12px; cursor: pointer; }
+
+        /* MATCH HISTORY & OTHER STYLES */
+        .stats-grid { display: grid; grid-template-columns: 350px 1fr; gap: 30px; }
+        .rank-card { background: rgba(1, 10, 19, 0.9); border: 1px solid var(--gold-dark); padding: 30px; text-align: center; margin-bottom: 20px; }
+        .rank-icon { width: 180px; filter: drop-shadow(0 0 15px rgba(0,238,255,0.3)); }
+        .content-section { background: rgba(9, 20, 40, 0.5); border: 1px solid var(--gold-dark); padding: 30px; }
+        .section-header { font-family: 'Beaufort for LoL'; font-size: 24px; color: var(--gold-medium); border-bottom: 1px solid var(--gold-dark); margin-bottom: 25px; padding-bottom: 10px; }
+        
+        .match-row { display: grid; grid-template-columns: 80px 150px 1fr 150px 100px; background: #1e2328; margin-bottom: 10px; border-left: 5px solid; align-items: center; height: 80px; }
+        .match-row.win { border-color: #2c7a4d; background: linear-gradient(to right, #1a3a2a, #1e2328); }
+        .match-row.loss { border-color: #a33030; background: linear-gradient(to right, #3a1a1a, #1e2328); }
+        .champ-circle { width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--gold-medium); margin-left: 15px; }
+        .kda-box { text-align: center; font-weight: bold; }
+        .item-list { display: flex; gap: 3px; }
+        .item-slot { width: 25px; height: 25px; background: #010a13; border: 1px solid var(--gold-dark); }
+        .champ-pool { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-top: 30px; }
+        .pool-item { text-align: center; background: rgba(0,0,0,0.3); padding: 10px; border: 1px solid #333; }
+        .pool-item img { width: 100%; border: 1px solid var(--gold-dark); }
+    </style>
+</head>
+<body>
+
+<div class="profile-bg"></div>
+
+<div class="modal-overlay" id="editModal">
+    <div class="hextech-modal">
+        <div class="modal-title">HEXTECH PROFILE CONFIG</div>
+        
+        <div class="form-group">
+            <label>Summoner Name</label>
+            <input type="text" id="input-name" value="Amar Majdančić">
+        </div>
+
+        <div class="form-group">
+            <label>Tagline / Quote</label>
+            <input type="text" id="input-quote" value='"The wind is always by my side."'>
+        </div>
+
+        <label style="font-size: 11px; color: var(--gold-medium); text-transform: uppercase;">Select Summoner Icon</label>
+        <div class="avatar-selector" id="avatar-options">
+            </div>
+
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeModal()">CANCEL</button>
+            <button class="btn-save" onclick="saveProfile()">CONFIRM CHANGES</button>
+        </div>
+    </div>
+</div>
+
+<nav class="simple-nav">
+    <a href="index.html" class="back-link"><span>◀</span> BACK TO HOME</a>
+</nav>
+
+<div class="profile-container">
+    <header class="user-header">
+        <div class="icon-box">
+            <img id="main-profile-icon" src="https://ddragon.leagueoflegends.com/cdn/14.4.1/img/profileicon/588.png">
+            <div class="lvl-tag">342</div>
+        </div>
+        <div class="user-info">
+            <h1 id="display-name">AMAR MAJDANČIĆ</h1>
+            <p>CHALLENGER — EU NORDIC & EAST</p>
+            <div id="user-quote">"The wind is always by my side."</div>
+        </div>
+        <div style="margin-left: auto;">
+             <button class="btn-edit" onclick="openModal()">EDIT PROFILE</button>
+        </div>
+    </header>
+
+    <div class="stats-grid">
+        <aside>
+            <div class="rank-card">
+                <h3>RANKED SOLO/DUO</h3>
+                <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-mini-crests/challenger.png" class="rank-icon">
+                <div style="font-size: 24px; font-weight: bold; margin: 15px 0;">CHALLENGER</div>
+                <div style="color: var(--blue-1);">1,240 LP / 583W 412L</div>
+            </div>
+        </aside>
+
+        <main class="content-section">
+            <div class="section-header">MATCH HISTORY</div>
+            <div id="history-container"></div>
+            <div class="section-header" style="margin-top: 50px;">CHAMPION POOL (MASTERY)</div>
+            <div class="champ-pool" id="mastery-grid"></div>
+        </main>
+    </div>
+</div>
+
+<script>
+    // 1. DATA & AVATAR SELECTION logic
+    let selectedAvatarUrl = "https://ddragon.leagueoflegends.com/cdn/14.4.1/img/profileicon/588.png";
+    const iconIds = [588, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510, 511];
+
+    function initAvatarGrid() {
+        const grid = $('#avatar-options');
+        iconIds.forEach(id => {
+            const url = `https://ddragon.leagueoflegends.com/cdn/14.4.1/img/profileicon/${id}.png`;
+            const img = $(`<img src="${url}" class="avatar-option">`);
+            
+            img.click(function() {
+                $('.avatar-option').removeClass('selected');
+                $(this).addClass('selected');
+                selectedAvatarUrl = url;
+            });
+
+            if(url === selectedAvatarUrl) img.addClass('selected');
+            grid.append(img);
+        });
+    }
+
+    function openModal() { $('#editModal').css('display', 'flex'); }
+    function closeModal() { $('#editModal').hide(); }
+
+    function saveProfile() {
+        const newName = $('#input-name').val();
+        const newQuote = $('#input-quote').val();
+        
+        // Update Name & Quote
+        $('#display-name').text(newName.toUpperCase());
+        $('#user-quote').text(newQuote);
+        
+        // Update Icon with a little "flash" effect
+        $('#main-profile-icon').attr('src', selectedAvatarUrl).css('filter', 'brightness(2)');
+        setTimeout(() => { $('#main-profile-icon').css('filter', 'brightness(1)'); }, 300);
+
+        closeModal();
+    }
+
+    // 2. FILL MASTERY DATA
+    const champions = [
+        { id: "Yasuo", lvl: 7, pts: "1.2M" }, { id: "Yone", lvl: 7, pts: "850K" },
+        { id: "Zed", lvl: 7, pts: "640K" }, { id: "LeeSin", lvl: 7, pts: "410K" },
+        { id: "Aatrox", lvl: 6, pts: "180K" }
+    ];
+
+    const pool = document.getElementById('mastery-grid');
+    champions.forEach(c => {
+        pool.innerHTML += `
+            <div class="pool-item">
+                <img src="https://ddragon.leagueoflegends.com/cdn/14.4.1/img/champion/${c.id}.png">
+                <div style="font-weight: bold; font-size: 13px;">${c.id.toUpperCase()}</div>
+                <div style="color: var(--gold-medium); font-size: 11px;">M${c.lvl} • ${c.pts}</div>
+            </div>
+        `;
+    });
+
+    // 3. FILL MATCH HISTORY
+    const history = document.getElementById('history-container');
+    for(let i=0; i<6; i++) {
+        const isWin = Math.random() > 0.4;
+        history.innerHTML += `
+            <div class="match-row ${isWin ? 'win' : 'loss'}">
+                <img src="https://ddragon.leagueoflegends.com/cdn/14.4.1/img/champion/Yasuo.png" class="champ-circle">
+                <div style="padding-left: 20px;">
+                    <div style="font-weight: bold; color: ${isWin ? '#55ff55' : '#ff5555'}">${isWin ? 'VICTORY' : 'DEFEAT'}</div>
+                    <div style="font-size: 11px;">Ranked Solo</div>
+                </div>
+                <div class="kda-box">
+                    <div>10 / 2 / 8</div>
+                    <div style="font-size: 10px; color: var(--gold-medium);">SCORE</div>
+                </div>
+                <div class="item-list">
+                    <div class="item-slot"></div><div class="item-slot"></div><div class="item-slot"></div>
+                </div>
+                <div style="font-size: 11px; text-align: right; padding-right: 20px; color: #888;">Recent</div>
+            </div>
+        `;
+    }
+
+    // Initialize
+    $(document).ready(function() {
+        initAvatarGrid();
+    });
+</script>
+
+</body>
+</html>
